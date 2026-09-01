@@ -1,0 +1,25 @@
+<div class="form">
+
+  <input
+    type="text"
+    placeholder="Enter name"
+    [(ngModel)]="employee.name"
+  />
+
+  <input
+    type="email"
+    placeholder="Enter email"
+    [(ngModel)]="employee.email"
+  />
+
+  <input
+    type="text"
+    placeholder="Enter department"
+    [(ngModel)]="employee.department"
+  />
+
+  <button (click)="addEmployee()">
+    Add Employee
+  </button>
+
+</div>

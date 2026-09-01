@@ -1,0 +1,13 @@
+<div class="container">
+
+  <h1>Employee Management System</h1>
+
+  <app-employee-form
+    (employeeAdded)="employeeList.loadEmployees()">
+  </app-employee-form>
+
+  <app-employee-list
+    #employeeList>
+  </app-employee-list>
+
+</div>

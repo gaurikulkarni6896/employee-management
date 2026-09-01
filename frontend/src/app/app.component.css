@@ -1,0 +1,173 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #1f2937;
+}
+
+.header p {
+  margin-top: 8px;
+  color: #6b7280;
+}
+
+.content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.card-header h2 {
+  margin: 0;
+  color: #1f2937;
+}
+
+.card-header p {
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 15px;
+  align-items: end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.add-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #1d4ed8;
+}
+
+.employee-count {
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f9fafb;
+}
+
+th {
+  text-align: left;
+  padding: 14px;
+  color: #6b7280;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+td {
+  padding: 16px 14px;
+  border-top: 1px solid #e5e7eb;
+  color: #4b5563;
+}
+
+.employee-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.id-badge {
+  background: #f3f4f6;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.department {
+  background: #ecfdf5;
+  color: #059669;
+  padding: 6px 10px;
+  border-radius: 15px;
+  font-size: 13px;
+}
+
+.delete-btn {
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+}
