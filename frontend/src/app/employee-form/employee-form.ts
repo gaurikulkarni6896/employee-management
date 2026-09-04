@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { Employee } from '../employee';
-import { EmployeeService } from '../employee.service';
+import { EmployeeService, CreateEmployee } from '../services/employee.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -13,16 +13,18 @@ import { EmployeeService } from '../employee.service';
 })
 export class EmployeeFormComponent {
 
-  @Output() employeeAdded = new EventEmitter<void>();
+  employee: CreateEmployee = {
 
-  employee: Employee = {
     name: '',
     email: '',
-    department: ''
+    department: '',
+    city:''
+
   };
 
   constructor(
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private router: Router
   ) {}
 
   addEmployee(): void {
@@ -32,29 +34,61 @@ export class EmployeeFormComponent {
       !this.employee.email ||
       !this.employee.department
     ) {
+
       alert('Please enter all fields');
+
       return;
     }
 
-    this.employeeService.createEmployee(this.employee).subscribe({
+    console.log(
+      'Creating employee:',
+      this.employee
+    );
 
-      next: () => {
+    this.employeeService
+      .createEmployee(this.employee)
+      .subscribe({
 
-        alert('Employee added successfully');
+        next: (response) => {
 
-        this.employee = {
-          name: '',
-          email: '',
-          department: ''
-        };
+          console.log(
+            'Employee created:',
+            response
+          );
 
-        this.employeeAdded.emit();
-      },
+          alert(
+            'Employee added successfully'
+          );
 
-      error: (error) => {
-        console.error('Error adding employee:', error);
-      }
+          this.router.navigate([
+            '/employees'
+          ]);
 
-    });
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Create employee error:',
+            error
+          );
+
+          alert(
+            'Error adding employee'
+          );
+
+        }
+
+      });
+
   }
+
+  goToEmployeeList(): void {
+
+    this.router.navigate([
+      '/employees'
+    ]);
+
+  }
+
 }

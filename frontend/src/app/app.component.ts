@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
-import { EmployeeFormComponent } from './employee-form/employee-form';
-import { EmployeeListComponent } from './employee-list/employee-list';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    EmployeeFormComponent,
-    EmployeeListComponent
-  ],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-}
+export class AppComponent {}

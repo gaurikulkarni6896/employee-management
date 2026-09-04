@@ -1,29 +1,655 @@
-<h2>Employee List</h2>
+<div class="page">
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Department</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+  <!-- ==========================================
+       HEADER
+  =========================================== -->
 
-  <tbody>
-    @for (employee of employees; track employee.id) {
-      <tr>
-        <td>{{ employee.id }}</td>
-        <td>{{ employee.name }}</td>
-        <td>{{ employee.email }}</td>
-        <td>{{ employee.department }}</td>
-        <td>
-          <button (click)="deleteEmployee(employee.id!)">
-            Delete
-          </button>
-        </td>
-      </tr>
+  <div class="header">
+
+    <div>
+
+      <p class="eyebrow">
+        EMPLOYEE MANAGEMENT
+      </p>
+
+      <h1>
+        Employees
+      </h1>
+
+      <p class="subtitle">
+        Manage and view all employees in your organization.
+      </p>
+
+    </div>
+
+    <button
+      class="add-btn"
+      type="button"
+      (click)="goToEmployeeForm()">
+
+      <span class="plus">
+        +
+      </span>
+
+      Add Employee
+
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       STATISTICS
+  =========================================== -->
+
+  <div class="stats-grid">
+
+    <!-- Total Employees -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon employee-icon">
+        👥
+      </div>
+
+      <div>
+
+        <p>
+          Total Employees
+        </p>
+
+        <h2>
+          {{ employees.length }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <!-- Departments -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon department-icon">
+        🏢
+      </div>
+
+      <div>
+
+        <p>
+          Departments
+        </p>
+
+        <h2>
+          {{ departmentCount }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <!-- System Status -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon status-icon">
+        ✓
+      </div>
+
+      <div>
+
+        <p>
+          System Status
+        </p>
+
+        <h2 class="status-text">
+          Active
+        </h2>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       LOADING
+  =========================================== -->
+
+  @if (isLoading) {
+
+    <div class="state-container">
+
+      <div class="loader"></div>
+
+      <p>
+        Loading employees...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       ERROR
+  =========================================== -->
+
+  @if (!isLoading && errorMessage) {
+
+    <div class="state-container error-state">
+
+      <div class="state-icon">
+        !
+      </div>
+
+      <h3>
+        Unable to load employees
+      </h3>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        class="retry-btn"
+        type="button"
+        (click)="loadEmployees()">
+
+        Try Again
+
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       MAIN CONTENT
+  =========================================== -->
+
+  @if (!isLoading && !errorMessage) {
+
+    <!-- ========================================
+         DEPARTMENT CHART
+    ========================================= -->
+
+    @if (employees.length > 0) {
+
+      <div class="chart-card">
+
+        <div class="chart-header">
+
+          <div>
+
+            <h2>
+              Employees by Department
+            </h2>
+
+            <p>
+              Distribution of employees across departments.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="chart-container">
+
+          <canvas #departmentChart></canvas>
+
+        </div>
+
+      </div>
+
     }
-  </tbody>
-</table>
+
+
+    <!-- ========================================
+         EMPLOYEE TABLE CARD
+    ========================================= -->
+
+    <div class="table-card">
+
+      <!-- TABLE HEADER -->
+
+      <div class="table-header">
+
+        <div>
+
+          <h2>
+            Employee Directory
+          </h2>
+
+          <p>
+            All employees currently registered in the system.
+          </p>
+
+        </div>
+
+        <button
+          class="refresh-btn"
+          type="button"
+          (click)="loadEmployees()">
+
+          ↻ Refresh
+
+        </button>
+
+      </div>
+
+
+      <!-- ========================================
+           EMPLOYEE TABLE
+      ========================================= -->
+
+      @if (filteredEmployees.length > 0) {
+
+        <div class="table-container">
+
+          <table>
+
+            <!-- ==================================
+                 TABLE HEAD
+            ================================== -->
+
+            <thead>
+
+              <!-- HEADER ROW -->
+
+              <tr>
+
+                <!-- ID -->
+
+                <th>
+
+                  <div class="column-header">
+
+                    <span>
+                      ID
+                    </span>
+
+                    <button
+                      type="button"
+                      class="search-icon-btn"
+                      (click)="toggleSearch('id')">
+
+                      🔍
+
+                    </button>
+
+                  </div>
+
+                </th>
+
+
+                <!-- EMPLOYEE -->
+
+                <th>
+
+                  <div class="column-header">
+
+                    <span>
+                      Employee
+                    </span>
+
+                    <button
+                      type="button"
+                      class="search-icon-btn"
+                      (click)="toggleSearch('name')">
+
+                      🔍
+
+                    </button>
+
+                  </div>
+
+                </th>
+
+
+                <!-- EMAIL -->
+
+                <th>
+
+                  <div class="column-header">
+
+                    <span>
+                      Email
+                    </span>
+
+                    <button
+                      type="button"
+                      class="search-icon-btn"
+                      (click)="toggleSearch('email')">
+
+                      🔍
+
+                    </button>
+
+                  </div>
+
+                </th>
+
+
+                <!-- DEPARTMENT -->
+
+                <th>
+
+                  <div class="column-header">
+
+                    <span>
+                      Department
+                    </span>
+
+                    <button
+                      type="button"
+                      class="search-icon-btn"
+                      (click)="toggleSearch('department')">
+
+                      🔍
+
+                    </button>
+
+                  </div>
+
+                </th>
+
+
+                <!-- CITY -->
+
+                <th>
+
+                  <div class="column-header">
+
+                    <span>
+                      City
+                    </span>
+
+                    <button
+                      type="button"
+                      class="search-icon-btn"
+                      (click)="toggleSearch('city')">
+
+                      🔍
+
+                    </button>
+
+                  </div>
+
+                </th>
+
+
+                <!-- ACTION -->
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+
+              <!-- ==================================
+                   SEARCH ROW
+              ================================== -->
+
+              <tr class="search-row">
+
+                <!-- ID SEARCH -->
+
+                <th>
+
+                  @if (activeSearchColumn === 'id') {
+
+                    <input
+                      type="text"
+                      class="column-search"
+                      placeholder="Search ID..."
+                      [(ngModel)]="idSearch">
+
+                  }
+
+                </th>
+
+
+                <!-- NAME SEARCH -->
+
+                <th>
+
+                  @if (activeSearchColumn === 'name') {
+
+                    <input
+                      type="text"
+                      class="column-search"
+                      placeholder="Search employee..."
+                      [(ngModel)]="nameSearch">
+
+                  }
+
+                </th>
+
+
+                <!-- EMAIL SEARCH -->
+
+                <th>
+
+                  @if (activeSearchColumn === 'email') {
+
+                    <input
+                      type="text"
+                      class="column-search"
+                      placeholder="Search email..."
+                      [(ngModel)]="emailSearch">
+
+                  }
+
+                </th>
+
+
+                <!-- DEPARTMENT SEARCH -->
+
+                <th>
+
+                  @if (activeSearchColumn === 'department') {
+
+                    <input
+                      type="text"
+                      class="column-search"
+                      placeholder="Search department..."
+                      [(ngModel)]="departmentSearch">
+
+                  }
+
+                </th>
+
+
+                <!-- CITY SEARCH -->
+
+                <th>
+
+                  @if (activeSearchColumn === 'city') {
+
+                    <input
+                      type="text"
+                      class="column-search"
+                      placeholder="Search city..."
+                      [(ngModel)]="citySearch">
+
+                  }
+
+                </th>
+
+
+                <!-- ACTION -->
+
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+
+            <!-- ==================================
+                 TABLE BODY
+            ================================== -->
+
+            <tbody>
+
+              @for (
+                employee of filteredEmployees;
+                track employee.id
+              )
+               {
+
+                <tr>
+
+                  <!-- ID -->
+
+                  <td>
+
+                    <span class="id-badge">
+
+                      #{{ employee.id }}
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- EMPLOYEE -->
+
+                  <td>
+
+                    <div class="employee-info">
+
+                      <div class="avatar">
+
+                        {{ getInitial(employee.name) }}
+
+                      </div>
+
+                      <div>
+
+                        <div class="employee-name">
+
+                          {{ employee.name }}
+
+                        </div>
+
+                        <div class="employee-role">
+
+                          Employee
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- EMAIL -->
+
+                  <td>
+
+                    <span class="email">
+
+                      {{ employee.email }}
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- DEPARTMENT -->
+
+                  <td>
+
+                    <span class="department">
+
+                      {{ employee.department || '-' }}
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- CITY -->
+
+                  <td>
+
+                    <span class="department">
+
+                      {{ employee.city || '-' }}
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- ACTION -->
+
+                 <td>
+  <button
+    class="view-btn"
+    type="button"
+    (click)="viewEmployee(employee.id)">
+    View
+  </button>
+</td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      }
+
+
+      <!-- ========================================
+           NO EMPLOYEES / NO SEARCH RESULTS
+      ========================================= -->
+
+      @if (filteredEmployees.length === 0) {
+
+        <div class="state-container">
+
+          <div class="empty-icon">
+            👤
+          </div>
+
+          <h3>
+            No employees found
+          </h3>
+
+          <p>
+            Try changing your search or add a new employee.
+          </p>
+
+          <button
+            class="retry-btn"
+            type="button"
+            (click)="goToEmployeeForm()">
+
+            Add Employee
+
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>
