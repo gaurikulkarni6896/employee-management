@@ -4,6 +4,10 @@ import { LoginComponent } from './login/login';
 import { EmployeeListComponent } from './employee-list/employee-list';
 import { EmployeeFormComponent } from './employee-form/employee-form';
 import { EmployeeDetailsComponent } from './employee-details/employee-details';
+import { MyProfileComponent } from './my-profile/my-profile';
+
+import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
 
@@ -13,18 +17,27 @@ export const routes: Routes = [
   },
 
   {
-    path: 'employees/:id',
-    component: EmployeeDetailsComponent
+    path: 'employees',
+    component: EmployeeListComponent,
+    canActivate: [authGuard, adminGuard]
   },
 
   {
-    path: 'employees',
-    component: EmployeeListComponent
+    path: 'employees/:id',
+    component: EmployeeDetailsComponent,
+    canActivate: [authGuard, adminGuard]
   },
 
   {
     path: 'employee-form',
-    component: EmployeeFormComponent
+    component: EmployeeFormComponent,
+    canActivate: [authGuard, adminGuard]
+  },
+
+  {
+    path: 'my-profile',
+    component: MyProfileComponent,
+    canActivate: [authGuard]
   },
 
   {
@@ -37,4 +50,5 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'login'
   }
+
 ];

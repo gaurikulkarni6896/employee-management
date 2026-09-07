@@ -34,13 +34,28 @@ export class LoginComponent {
             response
           );
 
-          this.router.navigate([
-            '/employees'
-          ]);
+          console.log(
+            'Logged-in role:',
+            response.user.role
+          );
+
+          if (response.user.role === 'ADMIN') {
+
+            this.router.navigate([
+              '/employees'
+            ]);
+
+          } else {
+
+            this.router.navigate([
+              '/my-profile'
+            ]);
+
+          }
 
         },
 
-        error: (error) => {
+        error: (error: any) => {
 
           console.error(
             'Login failed:',

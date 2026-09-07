@@ -151,6 +151,8 @@ viewEmployee(employeeId: number): void {
 
   }
 
+  
+
 
   // ==========================================
   // TOGGLE SEARCH
@@ -254,188 +256,210 @@ viewEmployee(employeeId: number): void {
   // CREATE DEPARTMENT CHART
   // ==========================================
 
-  createDepartmentChart(): void {
+createDepartmentChart(): void {
 
-    if (!this.departmentChartCanvas) {
+  if (!this.departmentChartCanvas) {
+    console.error('Department chart canvas not found.');
+    return;
+  }
 
-      console.log(
-        'Chart canvas is not available yet.'
-      );
+  const canvas =
+    this.departmentChartCanvas.nativeElement;
 
-      return;
+  const context = canvas.getContext('2d');
 
-    }
+  if (!context) {
+    console.error('Unable to get chart canvas context.');
+    return;
+  }
 
+ // ========================================
+// COUNT DEPARTMENTS
+// ========================================
 
-    const canvas =
-      this.departmentChartCanvas.nativeElement;
+const departmentCounts: {
+  [key: string]: number
+} = {};
 
+this.employees.forEach(employee => {
 
-    const context =
-      canvas.getContext('2d');
+  const department =
+    employee.department?.trim().toLowerCase() || 'unknown';
 
+  departmentCounts[department] =
+    (departmentCounts[department] || 0) + 1;
 
-    if (!context) {
+});
 
-      console.error(
-        'Unable to get chart context.'
-      );
+const departments =
+  Object.keys(departmentCounts).map(department =>
+    department.charAt(0).toUpperCase() + department.slice(1)
+  );
 
-      return;
+const counts =
+  Object.values(departmentCounts);
+  
+  // ========================================
+  // DESTROY OLD CHART
+  // ========================================
 
-    }
+  if (this.departmentChart) {
+    this.departmentChart.destroy();
+  }
 
+  // ========================================
+  // MODERN COLORS
+  // ========================================
 
-    // Destroy existing chart
+  const chartColors = [
+    '#6366F1',
+    '#06B6D4',
+    '#10B981',
+    '#F59E0B',
+    '#EF4444',
+    '#8B5CF6',
+    '#EC4899',
+    '#14B8A6'
+  ];
 
-    if (this.departmentChart) {
+  // ========================================
+  // CREATE CHART
+  // ========================================
 
-      this.departmentChart.destroy();
+ this.departmentChart = new Chart(context, {
+  type: 'bar',
 
-      this.departmentChart = undefined;
+  data: {
+    labels: departments,
 
-    }
+    datasets: [
+      {
+        label: 'Employees',
+        data: counts,
 
+        backgroundColor: [
+          '#4F46E5',
+          '#06B6D4',
+          '#10B981',
+          '#F59E0B',
+          '#EF4444',
+          '#8B5CF6',
+          '#EC4899',
+          '#14B8A6'
+        ],
 
-    // ========================================
-    // DEPARTMENT COUNTS
-    // ========================================
+        borderWidth: 0,
 
-    const departmentCounts: {
-      [key: string]: number
-    } = {};
+        borderRadius: 10,
 
+        borderSkipped: false,
 
-    this.employees.forEach(
-      employee => {
+    
+       barPercentage: 0.90,
+categoryPercentage: 0.95,
 
-        const department =
-          employee.department?.trim()
-          || 'Unknown';
-
-
-        departmentCounts[department] =
-          (departmentCounts[department] || 0) + 1;
-
+        maxBarThickness: 50
       }
-    );
+    ]
+  },
 
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
 
-    console.log(
-      'Department counts:',
-      departmentCounts
-    );
+    animation: {
+      duration: 800
+    },
 
+    scales: {
+      y: {
+        beginAtZero: true,
 
-    const departments =
-      Object.keys(
-        departmentCounts
-      );
+        ticks: {
+          stepSize: 1,
+          precision: 0,
+          padding: 10
+        },
 
+        grid: {
+          color: '#E5E7EB'
+        },
 
-    const counts =
-      Object.values(
-        departmentCounts
-      );
+        border: {
+          display: false
+        },
 
+        title: {
+          display: true,
+          text: 'Number of Employees',
+          font: {
+            size: 13
+          },
+          color: '#64748B'
+        }
+      },
 
-    // ========================================
-    // CREATE CHART
-    // ========================================
+      x: {
+        grid: {
+          display: false
+        },
 
-    this.departmentChart =
-      new Chart(
-        context,
-        {
+        border: {
+          display: false
+        },
 
-          type: 'bar',
+        title: {
+          display: true,
+          text: 'Department',
+          font: {
+            size: 13
+          },
+          color: '#64748B'
+        },
 
-          data: {
+        ticks: {
+          color: '#475569',
 
-            labels: departments,
-
-            datasets: [
-
-              {
-
-                label: 'Employees',
-
-                data: counts,
-
-                borderWidth: 1
-
-              }
-
-            ]
-
+          font: {
+            size: 12
           },
 
-          options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            animation: false,
-
-            scales: {
-
-              y: {
-
-                beginAtZero: true,
-
-                ticks: {
-
-                  stepSize: 1
-
-                },
-
-                title: {
-
-                  display: true,
-
-                  text: 'Number of Employees'
-
-                }
-
-              },
-
-              x: {
-
-                title: {
-
-                  display: true,
-
-                  text: 'Department'
-
-                }
-
-              }
-
-            },
-
-            plugins: {
-
-              legend: {
-
-                display: true
-
-              }
-
-            }
-
-          }
-
+          padding: 10
         }
+      }
+    },
 
-      );
+    plugins: {
+      legend: {
+        display: false
+      },
 
+      tooltip: {
+        backgroundColor: '#0F172A',
+        titleColor: '#FFFFFF',
+        bodyColor: '#E2E8F0',
 
-    console.log(
-      'Department chart created successfully.'
-    );
+        padding: 12,
 
+        cornerRadius: 8,
+
+        displayColors: true,
+
+        callbacks: {
+          label: (context) => {
+            const value = context.parsed.y ?? 0;
+            return ` Employees: ${value}`;
+          }
+        }
+      }
+    }
   }
+});
+
+  console.log(
+    'Department chart created successfully.'
+  );
+}
 
 
   // ==========================================
