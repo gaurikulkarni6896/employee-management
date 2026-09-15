@@ -1,0 +1,26 @@
+@if (authService.isLoggedIn()) {
+
+  <div class="header">
+
+    <div class="app-title">
+      Employee Management
+    </div>
+
+    <div class="user-section">
+
+      <span>
+        {{ authService.getCurrentUser()?.name }}
+      </span>
+
+      <button
+        type="button"
+        (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+}
+
+<router-outlet></router-outlet>

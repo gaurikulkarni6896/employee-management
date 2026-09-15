@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Employee Details</h2>
+
+<mat-dialog-content>
+
+  <div class="detail-row">
+    <span>ID</span>
+    <strong>{{ employee.id }}</strong>
+  </div>
+
+  <div class="detail-row">
+    <span>Name</span>
+    <strong>{{ employee.name }}</strong>
+  </div>
+
+  <div class="detail-row">
+    <span>Email</span>
+    <strong>{{ employee.email }}</strong>
+  </div>
+
+  <div class="detail-row">
+    <span>Department</span>
+    <strong>{{ employee.department }}</strong>
+  </div>
+
+  <div class="detail-row">
+    <span>City</span>
+    <strong>{{ employee.city }}</strong>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    mat-dialog-close>
+    Close
+  </button>
+
+</mat-dialog-actions>

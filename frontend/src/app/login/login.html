@@ -1,0 +1,37 @@
+<h1>Employee Management Login</h1>
+
+<form (ngSubmit)="login()">
+
+  <div>
+
+    <label>
+      Email ID :
+    </label>
+
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="email"
+    />
+
+  </div>
+
+  <br>
+
+  <div>
+
+    <label>
+      Password:
+    </label>
+
+    <input
+      type="password"
+      name="password"
+      [(ngModel)]="password"
+    />
+
+  </div>
+  <br>
+  <button type="submit">Login </button>
+
+</form>

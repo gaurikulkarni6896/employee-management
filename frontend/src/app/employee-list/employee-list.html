@@ -1,0 +1,407 @@
+<div class="page">
+
+  <div class="header-row">
+
+    <div>
+      <p class="eyebrow">
+        EMPLOYEE MANAGEMENT
+      </p>
+
+      <h1>
+        Employees
+      </h1>
+
+      <p class="subtitle">
+        Manage and view all employees in your organization.
+      </p>
+    </div>
+
+    <button
+      class="add-btn"
+      type="button"
+      (click)="goToEmployeeForm()">
+
+      + Add Employee
+
+    </button>
+
+  </div>
+
+
+
+  <!-- STATS -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        👥
+      </div>
+
+      <div>
+
+        <p>Total Employees</p>
+
+        <h2>
+          {{ employees.length }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        🏢
+      </div>
+
+      <div>
+
+        <p>Departments</p>
+
+        <h2>
+          {{ departmentCount }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        ✓
+      </div>
+
+      <div>
+
+        <p>System Status</p>
+
+        <h2 class="status-text">
+          Active
+        </h2>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CHART -->
+
+  <section class="chart-card">
+
+    <h2>
+      Employees by Department
+    </h2>
+
+    <p>
+      Distribution of employees across departments.
+    </p>
+
+    <app-department-chart
+      [employees]="employees">
+    </app-department-chart>
+
+  </section>
+
+
+  <!-- TABLE -->
+
+  <section class="table-card">
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>
+          Employee Directory
+        </h2>
+
+        <p>
+          {{ filteredEmployees.length }}
+          of
+          {{ employees.length }}
+          employees shown
+        </p>
+
+      </div>
+
+      <button
+        class="reset-btn"
+        type="button"
+        (click)="resetFilters()">
+
+        Reset
+
+      </button>
+
+    </div>
+
+
+    <div class="table-container">
+
+      <table>
+
+       <thead>
+
+  <!-- COLUMN HEADERS -->
+  <tr>
+
+    <!-- ID -->
+    <th>
+      <div class="column-header">
+        <span>ID</span>
+
+        <button
+          type="button"
+          class="search-icon"
+          (click)="toggleSearch('id')"
+          title="Search ID">
+          🔍
+        </button>
+      </div>
+    </th>
+
+
+    <!-- EMPLOYEE -->
+    <th>
+      <div class="column-header">
+        <span>Employee</span>
+
+        <button
+          type="button"
+          class="search-icon"
+          (click)="toggleSearch('name')"
+          title="Search Employee">
+          🔍
+        </button>
+      </div>
+    </th>
+
+
+    <!-- EMAIL -->
+    <th>
+      <div class="column-header">
+        <span>Email</span>
+
+        <button
+          type="button"
+          class="search-icon"
+          (click)="toggleSearch('email')"
+          title="Search Email">
+          🔍
+        </button>
+      </div>
+    </th>
+
+
+    <!-- DEPARTMENT -->
+    <th>
+      <div class="column-header">
+        <span>Department</span>
+
+        <button
+          type="button"
+          class="search-icon"
+          (click)="toggleSearch('department')"
+          title="Search Department">
+          🔍
+        </button>
+      </div>
+    </th>
+
+
+    <!-- CITY -->
+    <th>
+      <div class="column-header">
+        <span>City</span>
+
+        <button
+          type="button"
+          class="search-icon"
+          (click)="toggleSearch('city')"
+          title="Search City">
+          🔍
+        </button>
+      </div>
+    </th>
+
+
+    <!-- ACTION -->
+    <th>
+      Action
+    </th>
+
+  </tr>
+
+
+  <!-- SEARCH INPUTS -->
+  <tr class="search-row">
+
+    <!-- ID SEARCH -->
+    <th>
+
+      @if (activeSearchColumn === 'id') {
+
+        <input
+          type="text"
+          class="column-search"
+          [(ngModel)]="idSearch"
+          placeholder="Search ID..."
+        />
+
+      }
+
+    </th>
+
+
+    <!-- NAME SEARCH -->
+    <th>
+
+      @if (activeSearchColumn === 'name') {
+
+        <input
+          type="text"
+          class="column-search"
+          [(ngModel)]="nameSearch"
+          placeholder="Search employee..."
+        />
+
+      }
+
+    </th>
+
+
+    <!-- EMAIL SEARCH -->
+    <th>
+
+      @if (activeSearchColumn === 'email') {
+
+        <input
+          type="text"
+          class="column-search"
+          [(ngModel)]="emailSearch"
+          placeholder="Search email..."
+        />
+
+      }
+
+    </th>
+
+
+    <!-- DEPARTMENT SEARCH -->
+    <th>
+
+      @if (activeSearchColumn === 'department') {
+
+        <input
+          type="text"
+          class="column-search"
+          [(ngModel)]="departmentSearch"
+          placeholder="Search department..."
+        />
+
+      }
+
+    </th>
+
+
+    <!-- CITY SEARCH -->
+    <th>
+
+      @if (activeSearchColumn === 'city') {
+
+        <input
+          type="text"
+          class="column-search"
+          [(ngModel)]="citySearch"
+          placeholder="Search city..."
+        />
+
+      }
+
+    </th>
+
+
+    <!-- ACTION -->
+    <th></th>
+
+  </tr>
+
+</thead>
+
+
+        <tbody>
+
+          @for (
+            employee of filteredEmployees;
+            track employee.id
+          ) {
+
+            <tr>
+
+              <td>
+                #{{ employee.id }}
+              </td>
+
+              <td>
+                {{ employee.name }}
+              </td>
+
+              <td>
+                {{ employee.email }}
+              </td>
+
+              <td>
+                {{ employee.department || '-' }}
+              </td>
+
+              <td>
+                {{ employee.city || '-' }}
+              </td>
+
+              <td>
+
+                <button
+                  type="button"
+                  (click)="viewEmployee(employee)">
+
+                  View
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+          @empty {
+
+            <tr>
+
+              <td colspan="6">
+
+                No employees found.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</div>

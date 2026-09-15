@@ -1,0 +1,146 @@
+<div class="page">
+
+  <!-- Header -->
+
+  <div class="header">
+
+    <div>
+
+      <p class="eyebrow">
+        EMPLOYEE MANAGEMENT
+      </p>
+
+      <h1>
+        Add Employee
+      </h1>
+
+      <p class="subtitle">
+        Add a new employee to your organization.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- Form Card -->
+
+  <div class="form-card">
+
+    <div class="form-header">
+
+      <div class="form-icon">
+        👤
+      </div>
+
+      <div>
+
+        <h2>
+          Employee Information
+        </h2>
+
+        <p>
+          Enter the employee details below.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <form
+      (ngSubmit)="addEmployee()"
+    >
+
+      <!-- Name -->
+
+      <div class="form-group">
+
+        <label for="name">
+          Full Name
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          name="name"
+          placeholder="Enter employee name"
+          [(ngModel)]="employee.name"
+        />
+
+      </div>
+
+
+      <!-- Email -->
+
+      <div class="form-group">
+
+        <label for="email">
+          Email Address
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter email address"
+          [(ngModel)]="employee.email"
+        />
+
+      </div>
+
+
+      <!-- Department -->
+
+      <div class="form-group">
+
+        <label for="department">
+          Department
+        </label>
+
+        <input
+          id="department"
+          type="text"
+          name="department"
+          placeholder="e.g. Engineering"
+          [(ngModel)]="employee.department"
+        />
+
+        <label>City</label>
+
+<input
+  type="text"
+  name="city"
+  [(ngModel)]="employee.city"
+  placeholder="Enter city">
+
+      </div>
+
+
+      <!-- Buttons -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="back-btn"
+          (click)="goToEmployeeList()"
+        >
+          ← Back to Employees
+        </button>
+
+
+        <button
+          type="submit"
+          class="submit-btn"
+        >
+          + Add Employee
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
