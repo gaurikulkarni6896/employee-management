@@ -3,6 +3,10 @@ import {
   Component,
   OnInit
 } from '@angular/core';
+
+import { ChartComponent }
+  from '../shared/chart/chart';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,11 +20,14 @@ import { EmployeeDetailsComponent } from '../employee-details/employee-details';
 @Component({
   selector: 'app-employee-list',
   standalone: true,
+
   imports: [
     CommonModule,
     FormsModule,
-    DepartmentChartComponent
+    DepartmentChartComponent,
+    ChartComponent
   ],
+
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })
@@ -127,6 +134,70 @@ export class EmployeeListComponent implements OnInit {
     });
 
   }
+
+  //citywise
+
+  get cityChartLabels(): string[] {
+
+  const cities = new Map<string, string>();
+
+  for (const employee of this.employees) {
+
+    const rawCity =
+      employee.city?.trim() || 'Unknown';
+
+    const key =
+      rawCity.toLowerCase();
+
+    if (!cities.has(key)) {
+
+      const displayCity =
+        key === 'unknown'
+          ? 'Unknown'
+          : key.charAt(0).toUpperCase() +
+            key.slice(1);
+
+      cities.set(
+        key,
+        displayCity
+      );
+
+    }
+
+  }
+
+  return Array.from(
+    cities.values()
+  );
+
+}
+
+
+get cityChartValues(): number[] {
+
+  const counts =
+    new Map<string, number>();
+
+  for (const employee of this.employees) {
+
+    const city =
+      employee.city?.trim() || 'Unknown';
+
+    const key =
+      city.toLowerCase();
+
+    counts.set(
+      key,
+      (counts.get(key) || 0) + 1
+    );
+
+  }
+
+  return Array.from(
+    counts.values()
+  );
+
+}
 
 
   get filteredEmployees(): Employee[] {

@@ -111,6 +111,35 @@
   </section>
 
 
+  <section class="chart-card">
+
+  <div class="section-heading">
+
+    <div>
+
+      <h2>
+        Employees by City
+      </h2>
+
+      <p>
+        Distribution of employees across cities.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <app-chart
+    [labels]="cityChartLabels"
+    [values]="cityChartValues"
+    title="Employees"
+    chartType="pie">
+  </app-chart>
+
+</section>
+
+
   <!-- TABLE -->
 
   <section class="table-card">
